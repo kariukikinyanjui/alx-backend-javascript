@@ -4,7 +4,7 @@ export default function taskBlock(trueOrFalse) {
 
   // removed var keywords to avoid declaration
   if (trueOrFalse) {
-   return [task, task2];
+    return [task, task2];
   }
   return [task, task2];
 }
