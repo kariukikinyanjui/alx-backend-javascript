@@ -18,8 +18,8 @@ function countStudents (path) {
         csCount++;
         csStudents.push(line.split(',')[0]);
       } else if (field === 'SWE') {
-          sweCount++;
-          sweStudents.push(line.split(',')[0]);
+        sweCount++;
+        sweStudents.push(line.split(',')[0]);
       }
     }
     // Log the total number of students
