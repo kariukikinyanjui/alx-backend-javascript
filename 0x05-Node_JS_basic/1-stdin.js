@@ -1,15 +1,29 @@
 const process = require('process');
 
-const readline = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+function displayMessage (message) {
+  console.log(message);
+}
 
-readline.question('Welcome to Holberton School, what is your name? ', (name) => {
-  console.log(`Your name is: ${name}`);
-  readline.close();
-});
+function getUserName () {
+  process.stdin.resume();
+  process.stdin.setEncoding('utf-8');
 
+  return new Promise((resolve) => {
+    process.stdin.once('data', (name) => {
+      resolve(name.trim());
+    });
+  });
+}
+
+async function main () {
+  displayMessage('Welcome to Holberton School, what is your name?');
+
+  const name = await getUserName();
+
+  displayMessage(`Your name is: ${name}`);
+}
 process.on('exit', () => {
-  console.log('This important software is now closing\n');
+  displayMessage('This important software is now closing');
 });
+
+main();
