@@ -1,39 +1,32 @@
 const fs = require('fs');
 
-function countStudents (path) {
+const countStudents = (filePath) => {
   return new Promise((resolve, reject) => {
-    fs.readFile(path, 'utf8', (err, data) => {
+    fs.readFile(filePath, 'utf-8', (err, data) => {
       if (err) {
         reject(new Error('Cannot load the database'));
       } else {
         const lines = data.trim().split('\n').filter(line => line.trim() !== '');
-        // Initialize counters for each field
-        let csCount = 0;
-        let sweCount = 0;
-        const csStudents = [];
-        const sweStudents = [];
+        const studentByField = {};
 
-        // Loop through each line and count students in each field
-        for (const line of lines) {
-          const [, , , field] = line.split(',');
-          if (field === 'CS') {
-            csCount++;
-            csStudents.push(line.split(',')[0]);
-          } else if (field === 'SWE') {
-            sweCount++;
-            sweStudents.push(line.split(',')[0]);
+        for (const line of lines.slice(1)) {
+          const [firstname, , , field] = line.split(',');
+          if (!studentByField[field]) {
+            studentByField[field] = [];
           }
+          studentByField[field].push(firstname);
         }
-        // Log the total number of students
-        console.log(`Number of students: ${lines.length}`);
+        const totalStudents = lines.length - 1;
+        console.log(`Number of students in ${totalStudents}`);
 
-        // Log the number of students in each field along with their names
-        console.log(`Number of students in CS: ${csCount}. List: ${csStudents.join(', ')}`);
-        console.log(`Number of students in SWE: ${sweCount}. List: ${sweStudents.join(', ')}`);
+        for (const [field, students] of Object.entries(studentByField)) {
+          const studentNames = students.join(', ');
+          console.log(`Number of students in ${field}: ${students.length}. List: ${studentNames}`);
+        }
         resolve();
       }
     });
   });
-}
+};
 
 module.exports = countStudents;
