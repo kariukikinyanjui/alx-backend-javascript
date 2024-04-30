@@ -1,29 +1,13 @@
-const process = require('process');
+process.stdout.write('Welcome to Holberton School, what is your name?\n');
 
-function displayMessage (message) {
-  console.log(message);
-}
+process.stdin.on('readable', () => {
+  const name = process.stdin.read();
 
-function getUserName () {
-  process.stdin.resume();
-  process.stdin.setEncoding('utf-8');
-
-  return new Promise((resolve) => {
-    process.stdin.once('data', (name) => {
-      resolve(name.trim());
-    });
-  });
-}
-
-async function main () {
-  displayMessage('Welcome to Holberton School, what is your name?');
-
-  const name = await getUserName();
-
-  displayMessage(`Your name is: ${name}`);
-}
-process.on('exit', () => {
-  displayMessage('This important software is now closing');
+  if (name) {
+    process.stdout.write(`Your name is: ${name}`);
+  }
 });
 
-main();
+process.stdin.on('end', () => {
+  process.stdout.write('This important software is now closing\n');
+});
