@@ -11,7 +11,7 @@ describe('sendPaymentRequestToApi', function() {
   });
 
   afterEach(function() {
-    console.Spy.restore();
+    consoleSpy.restore();
   });
 
   it('should log the correct message for totalAmount 100 and totalShipping 20', function() {
