@@ -1,11 +1,15 @@
 const express = require('express');
-
+const bodyParser = require('body-parser');
 const app = express();
+
 const PORT = 7865;
 
-app.use(express.json());
+app.use(bodyParser.json());
 
-// Endpoint to return available payments
+app.get('/', (req, res) => {
+  res.send('Welcome to the payment system');
+});
+
 app.get('/available_payments', (req, res) => {
   res.json({
     payment_methods: {
@@ -15,7 +19,6 @@ app.get('/available_payments', (req, res) => {
   });
 });
 
-// Endpoint to handle login
 app.post('/login', (req, res) => {
   const { userName } = req.body;
   res.send(`Welcome ${userName}`);

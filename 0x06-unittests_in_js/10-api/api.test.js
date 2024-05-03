@@ -1,26 +1,35 @@
-const request = require('supertest');
+const { expect } = require('chai');
+const request = require('request');
 const app = require('./api');
 
-describe('GET /available_payments', () => {
-  it('should return available payments with correct structure', async () => {
-    const response = await request(app).get('/available_payments');
-    expect(response.status).toEqual(200);
-    expect(response.body).toEqual({
-      payment_methods: {
-        credit_cards: true,
-        paypal: false
-      }
+describe('Login endpoint', function() {
+  it('should return correct message for POST /login', function(done) {
+    const options = {
+      method: 'POST',
+      url: 'http://localhost:7865/login',
+      json: true,
+      body: { userName: 'Betty' }
+    };
+
+    request(options, (error, response, body) => {
+      expect(body).to.equal('Welcome Betty');
+      done();
     });
   });
 });
 
-describe('POST /login', () => {
-  it('should return welcome message with correct username', async () => {
-    const response = await request(app)
-      .post('/login')
-      .send({ userName: 'Betty' });
-    expect(response.status).toEqual(200);
-    expect(response.text).toEqual('Welcome Betty');
+describe('Available payments endpoint', function() {
+  it('should return correct object for GET /available_payments', function(done) {
+    request.get('http://localhost:7865/available_payments', (error, response, body) => {
+      const expectedResponse = {
+        payment_methods: {
+          credit_cards: true,
+          paypal: false
+        }
+      };
+      expect(JSON.parse(body)).to.deep.equal(expectedResponse);
+      done();
+    });
   });
 });
 
